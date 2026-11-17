@@ -10,6 +10,7 @@ import {
 } from '../../data/schoolData';
 import type { ConfirmedScheduleSnapshot, Teacher, TimetableSlot } from '../../types/sfs';
 import {
+  getReceiptTemplateCandidates,
   RECEIPT_OVERLAY_BOXES,
   RECEIPT_TEMPLATE_PATH,
   resolveReceiptTemplatePath,
@@ -338,6 +339,12 @@ function runTests() {
     resolveReceiptTemplatePath('/sfs-repo/'),
     '/sfs-repo/assets/sfs-receipt-template.png',
     'Explicit subpath base URL must preserve repository prefix'
+  );
+  const templateCandidates = getReceiptTemplateCandidates();
+  assert.ok(
+    templateCandidates.includes('./assets/sfs-receipt-template.png') &&
+      templateCandidates.includes('/assets/sfs-receipt-template.png'),
+    'Fallback candidate list must cover both relative subpath and root-relative URLs'
   );
   const templatePublicPath = path.join(
     process.cwd(),

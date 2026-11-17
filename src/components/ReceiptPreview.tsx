@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { ReceiptLayoutConfig, ReceiptSheet } from '../types/sfs';
 import {
   formatReceiptLineText,
+  getReceiptTemplateCandidates,
   RECEIPT_OVERLAY_BOXES,
   RECEIPT_TEMPLATE_PATH,
 } from '../utils/receiptLayout';
@@ -19,7 +20,10 @@ export function ReceiptPreview({
   mode = 'screen',
   className = '',
 }: ReceiptPreviewProps) {
-  const [imageError, setImageError] = useState(false);
+  const candidates = useMemo(() => getReceiptTemplateCandidates(), []);
+  const [candidateIndex, setCandidateIndex] = useState(0);
+  const imageError = candidateIndex >= candidates.length;
+  const activeSrc = candidates[candidateIndex] ?? RECEIPT_TEMPLATE_PATH;
 
   const teacherDisplay =
     sheet.totalPages > 1
@@ -55,14 +59,18 @@ export function ReceiptPreview({
     >
       {!imageError ? (
         <img
-          src={RECEIPT_TEMPLATE_PATH}
+          src={activeSrc}
           alt={`Shemford Futuristic School substitution receipt for ${sheet.substituteTeacherName}`}
-          onError={() => setImageError(true)}
-          className="absolute inset-0 z-0 block w-full h-full object-fill pointer-events-none"
+          onError={() => setCandidateIndex((prev) => prev + 1)}
+          className={
+            useMm
+              ? 'block w-full h-full object-fill pointer-events-none'
+              : 'block w-full h-auto object-fill pointer-events-none'
+          }
           draggable={false}
         />
       ) : (
-        <div className="absolute inset-0 z-0 w-full h-full flex flex-col items-center justify-center p-4 text-center bg-[#0B241C] text-[#E5D4A5] border border-[#C7A45A]">
+        <div className="w-full h-full min-h-[200px] flex flex-col items-center justify-center p-4 text-center bg-[#0B241C] text-[#E5D4A5] border border-[#C7A45A]">
           <p className="text-xs font-semibold">
             Receipt Template Image Missing
           </p>

@@ -1,15 +1,47 @@
 import type { ReceiptLayoutConfig } from '../types/sfs';
 
 export function resolveReceiptTemplatePath(baseOverride?: string): string {
+  if (baseOverride) {
+    if (baseOverride === '/') {
+      return './assets/sfs-receipt-template.png';
+    }
+    const normalizedBase = baseOverride.endsWith('/')
+      ? baseOverride
+      : `${baseOverride}/`;
+    return `${normalizedBase}assets/sfs-receipt-template.png`;
+  }
+
   const metaEnv = (
-    import.meta as ImportMeta & { env?: { BASE_URL?: string } }
+    import.meta as ImportMeta & {
+      env?: { BASE_URL?: string; PROD?: boolean };
+    }
   ).env;
-  const rawBase = baseOverride ?? metaEnv?.BASE_URL;
+
+  if (metaEnv?.PROD && typeof import.meta.url === 'string') {
+    try {
+      const target = './sfs-receipt-template.png';
+      return new URL(/* @vite-ignore */ target, import.meta.url).href;
+    } catch {
+      // Fall through to BASE_URL resolution
+    }
+  }
+
+  const rawBase = metaEnv?.BASE_URL;
   if (!rawBase || rawBase === '/') {
     return './assets/sfs-receipt-template.png';
   }
   const normalizedBase = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
   return `${normalizedBase}assets/sfs-receipt-template.png`;
+}
+
+export function getReceiptTemplateCandidates(): string[] {
+  const candidates = [
+    resolveReceiptTemplatePath(),
+    './assets/sfs-receipt-template.png',
+    '/assets/sfs-receipt-template.png',
+    'assets/sfs-receipt-template.png',
+  ];
+  return [...new Set(candidates)];
 }
 
 export const RECEIPT_TEMPLATE_PATH = resolveReceiptTemplatePath();

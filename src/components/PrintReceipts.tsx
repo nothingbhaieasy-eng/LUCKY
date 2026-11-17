@@ -25,6 +25,30 @@ interface PrintReceiptsProps {
   onGoToSubstitutions: () => void;
 }
 
+const SAMPLE_EMPTY_PREVIEW_SHEET: ReceiptSheet = {
+  sheetId: 'empty-state-template-preview',
+  substituteTeacherId: 'sample',
+  substituteTeacherName: 'Kavita Deshmukh',
+  pageNumber: 1,
+  totalPages: 1,
+  items: [
+    {
+      assignmentId: 'sample-1',
+      periodNumber: 1,
+      className: '8A',
+      subject: 'Mathematics',
+      absentTeacherName: 'Arjun Mehta',
+    },
+    {
+      assignmentId: 'sample-2',
+      periodNumber: 3,
+      className: '9B',
+      subject: 'Science',
+      absentTeacherName: 'Rohit Kulkarni',
+    },
+  ],
+};
+
 export function PrintReceipts({
   confirmedHistory,
   selectedDateISO,
@@ -93,38 +117,62 @@ export function PrintReceipts({
 
   if (confirmedHistory.length === 0) {
     return (
-      <section className="sfs-surface-light rounded-xl p-6 sm:p-8 text-center max-w-2xl mx-auto my-6">
-        <h2
-          className="text-2xl font-semibold text-[#0B241C]"
-          style={{ fontFamily: 'var(--font-display)' }}
-        >
-          No Confirmed Receipts Generated Yet
-        </h2>
-        <p className="text-sm text-[#3D4C42] mt-2 leading-relaxed">
-          Receipts are generated strictly after you mark absent teachers,
-          resolve all affected timetable periods, and click{' '}
-          <span className="font-bold text-[#0B241C]">
-            Confirm Substitutions
-          </span>
-          .
-        </p>
-        <div className="mt-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3">
-          <button
-            type="button"
-            onClick={onGoToSubstitutions}
-            className="sfs-btn-primary min-h-[44px] px-5 py-2.5 text-sm font-bold rounded-lg cursor-pointer"
-          >
-            Review Substitutions
-          </button>
-          <button
-            type="button"
-            onClick={onReturnDashboard}
-            className="sfs-btn-secondary min-h-[44px] px-5 py-2.5 text-sm font-semibold rounded-lg cursor-pointer"
-          >
-            Return to Dashboard
-          </button>
-        </div>
-      </section>
+      <div className="space-y-6 max-w-4xl mx-auto my-2 sfs-welcome-enter">
+        <section className="sfs-surface-light rounded-xl p-6 sm:p-8 grid grid-cols-1 md:grid-cols-[1fr_240px] gap-6 sm:gap-8 items-center">
+          <div className="text-center md:text-left">
+            <p className="text-xs font-bold uppercase tracking-wider text-[#176B4D]">
+              Official 40 × 60 mm Receipts
+            </p>
+            <h2
+              className="text-2xl sm:text-3xl font-semibold text-[#0B241C] mt-1.5"
+              style={{ fontFamily: 'var(--font-display)' }}
+            >
+              No Confirmed Receipts Generated Yet
+            </h2>
+            <p className="text-sm text-[#3D4C42] mt-2.5 leading-relaxed">
+              Printable teacher receipts are issued strictly after you mark
+              absent teachers on the Dashboard, resolve all affected timetable
+              periods, and click{' '}
+              <span className="font-bold text-[#0B241C]">
+                Confirm Substitutions
+              </span>
+              .
+            </p>
+            <div className="mt-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-center md:justify-start gap-3">
+              <button
+                type="button"
+                onClick={onGoToSubstitutions}
+                className="sfs-btn-primary min-h-[44px] px-5 py-2.5 text-sm font-bold rounded-lg cursor-pointer"
+              >
+                Review Substitutions
+              </button>
+              <button
+                type="button"
+                onClick={onReturnDashboard}
+                className="sfs-btn-secondary min-h-[44px] px-5 py-2.5 text-sm font-semibold rounded-lg cursor-pointer"
+              >
+                Return to Dashboard
+              </button>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center bg-[#FAF9F4] rounded-xl p-4 border border-[#12372B]/15">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#176B4D] mb-2.5">
+              Sample Template Preview
+            </span>
+            <div className="w-[200px] max-w-full rounded-lg overflow-hidden shadow-md border border-[#12372B]/20">
+              <ReceiptPreview
+                sheet={SAMPLE_EMPTY_PREVIEW_SHEET}
+                layout={receiptLayout}
+                mode="screen"
+              />
+            </div>
+            <p className="text-[11px] font-medium text-[#3D4C42] text-center mt-2.5">
+              Preview only · Confirm schedule to issue official receipts
+            </p>
+          </div>
+        </section>
+      </div>
     );
   }
 
