@@ -9,7 +9,11 @@ import {
   INITIAL_TEACHERS,
 } from '../../data/schoolData';
 import type { ConfirmedScheduleSnapshot, Teacher, TimetableSlot } from '../../types/sfs';
-import { RECEIPT_OVERLAY_BOXES, RECEIPT_TEMPLATE_PATH } from '../../utils/receiptLayout';
+import {
+  RECEIPT_OVERLAY_BOXES,
+  RECEIPT_TEMPLATE_PATH,
+  resolveReceiptTemplatePath,
+} from '../../utils/receiptLayout';
 import {
   confirmSubstitutionSchedule,
   generateSubstitutions,
@@ -324,11 +328,21 @@ function runTests() {
   assert.equal(paginatedBundles[0].sheets[1].items.length, 1);
   console.log('✓ Test 14 & 15: >4 period pagination and sheet isolation verified');
 
-  // 16. Receipt template asset existence & non-overflowing overlay coordinates
+  // 16. Receipt template asset existence, GitHub Pages subpath safety & non-overflowing overlay coordinates
+  assert.equal(
+    RECEIPT_TEMPLATE_PATH,
+    './assets/sfs-receipt-template.png',
+    'Default receipt template path must be relative so GitHub Pages subpaths resolve properly'
+  );
+  assert.equal(
+    resolveReceiptTemplatePath('/sfs-repo/'),
+    '/sfs-repo/assets/sfs-receipt-template.png',
+    'Explicit subpath base URL must preserve repository prefix'
+  );
   const templatePublicPath = path.join(
     process.cwd(),
     'public',
-    RECEIPT_TEMPLATE_PATH.replace(/^\/+/, '')
+    RECEIPT_TEMPLATE_PATH.replace(/^\.?\/+/, '')
   );
   assert.equal(
     fs.existsSync(templatePublicPath),

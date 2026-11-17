@@ -57,13 +57,12 @@ export function ReceiptPreview({
         <img
           src={RECEIPT_TEMPLATE_PATH}
           alt={`Shemford Futuristic School substitution receipt for ${sheet.substituteTeacherName}`}
-          referrerPolicy="no-referrer"
           onError={() => setImageError(true)}
-          className="block w-full h-full object-fill pointer-events-none"
+          className="absolute inset-0 z-0 block w-full h-full object-fill pointer-events-none"
           draggable={false}
         />
       ) : (
-        <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center bg-[#0B241C] text-[#E5D4A5] border border-[#C7A45A]">
+        <div className="absolute inset-0 z-0 w-full h-full flex flex-col items-center justify-center p-4 text-center bg-[#0B241C] text-[#E5D4A5] border border-[#C7A45A]">
           <p className="text-xs font-semibold">
             Receipt Template Image Missing
           </p>
@@ -75,7 +74,7 @@ export function ReceiptPreview({
 
       {/* Teacher Name Overlay — strictly inside blank space above Teacher Name line */}
       <div
-        className="absolute flex items-end overflow-hidden"
+        className="absolute z-10 flex items-end overflow-hidden"
         style={{
           left: `${RECEIPT_OVERLAY_BOXES.teacherName.leftPct + offsetX}%`,
           top: `${RECEIPT_OVERLAY_BOXES.teacherName.topPct + offsetY}%`,
@@ -117,7 +116,7 @@ export function ReceiptPreview({
         return (
           <div
             key={item.assignmentId}
-            className="absolute flex items-end overflow-hidden"
+            className="absolute z-10 flex items-end overflow-hidden"
             style={{
               left: `${box.leftPct + offsetX}%`,
               top: `${box.topPct + offsetY}%`,

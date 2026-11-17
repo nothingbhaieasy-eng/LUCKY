@@ -1,6 +1,18 @@
 import type { ReceiptLayoutConfig } from '../types/sfs';
 
-export const RECEIPT_TEMPLATE_PATH = '/assets/sfs-receipt-template.png';
+export function resolveReceiptTemplatePath(baseOverride?: string): string {
+  const metaEnv = (
+    import.meta as ImportMeta & { env?: { BASE_URL?: string } }
+  ).env;
+  const rawBase = baseOverride ?? metaEnv?.BASE_URL;
+  if (!rawBase || rawBase === '/') {
+    return './assets/sfs-receipt-template.png';
+  }
+  const normalizedBase = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
+  return `${normalizedBase}assets/sfs-receipt-template.png`;
+}
+
+export const RECEIPT_TEMPLATE_PATH = resolveReceiptTemplatePath();
 
 export const RECEIPT_DIMENSIONS_MM = {
   width: 40,
