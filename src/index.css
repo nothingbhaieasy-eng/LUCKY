@@ -1,0 +1,237 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --color-sfs-forest: #12372B;
+  --color-sfs-emerald: #176B4D;
+  --color-sfs-deep: #0B241C;
+  --color-sfs-gold: #C7A45A;
+  --color-sfs-champagne: #E5D4A5;
+  --color-sfs-ivory: #F7F6F0;
+  --color-sfs-charcoal: #222923;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    color: #1D241E;
+    background-color: #071812;
+  }
+
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* ========================================================================
+   SFS HIGH-CONTRAST SURFACES & ACTION HIERARCHY (NO BLUR OVER WEBGL)
+   ======================================================================== */
+.sfs-surface-dark {
+  background-color: rgba(9, 31, 24, 0.94);
+  border: 1px solid rgba(199, 164, 90, 0.48);
+  box-shadow: 0 12px 30px rgba(4, 15, 11, 0.42);
+}
+
+.sfs-surface-light {
+  background-color: #ffffff;
+  border: 1px solid rgba(18, 55, 43, 0.16);
+  box-shadow: 0 8px 24px rgba(4, 16, 12, 0.24);
+}
+
+.sfs-surface-ivory {
+  background-color: #faf9f4;
+  border: 1px solid rgba(199, 164, 90, 0.42);
+  box-shadow: 0 6px 18px rgba(4, 16, 12, 0.18);
+}
+
+.sfs-btn-primary {
+  background: linear-gradient(180deg, #ead8a6 0%, #c7a45a 100%);
+  color: #0b241c;
+  border: 1px solid #9a7930;
+  box-shadow:
+    0 4px 14px rgba(7, 24, 18, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transition:
+    transform 150ms cubic-bezier(0.16, 1, 0.3, 1),
+    filter 150ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sfs-btn-primary:hover:not(:disabled) {
+  filter: brightness(1.04);
+  box-shadow:
+    0 6px 18px rgba(7, 24, 18, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.sfs-btn-primary:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.sfs-btn-primary:disabled {
+  background: #d8ddd9;
+  color: #546158;
+  border-color: #bcc5be;
+  box-shadow: none;
+}
+
+.sfs-btn-emerald {
+  background-color: #12372b;
+  color: #ffffff;
+  border: 1px solid rgba(199, 164, 90, 0.35);
+  transition:
+    background-color 150ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sfs-btn-emerald:hover:not(:disabled) {
+  background-color: #176b4d;
+  border-color: rgba(229, 212, 165, 0.6);
+}
+
+.sfs-btn-secondary {
+  background-color: #ffffff;
+  color: #12372b;
+  border: 1px solid rgba(18, 55, 43, 0.28);
+  transition:
+    background-color 150ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sfs-btn-secondary:hover:not(:disabled) {
+  background-color: #f3efe0;
+  border-color: rgba(18, 55, 43, 0.42);
+}
+
+.sfs-btn-dark-secondary {
+  background-color: rgba(18, 55, 43, 0.92);
+  color: #f7f6f0;
+  border: 1px solid rgba(229, 212, 165, 0.45);
+  transition:
+    background-color 150ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sfs-btn-dark-secondary:hover:not(:disabled) {
+  background-color: #176b4d;
+  border-color: rgba(229, 212, 165, 0.78);
+  color: #ffffff;
+}
+
+/* Tasteful lightweight entry animation respecting reduced motion */
+@keyframes sfsFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sfs-welcome-enter {
+  animation: sfsFadeUp 320ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sfs-welcome-enter,
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ========================================================================
+   AMBIENT 3D BACKGROUND & CSS FALLBACK ATMOSPHERE
+   ======================================================================== */
+.sfs-fallback-atmosphere {
+  background-color: #071812;
+  background-image:
+    radial-gradient(60% 55% at 18% 22%, rgba(23, 107, 77, 0.34) 0%, rgba(11, 36, 28, 0) 70%),
+    radial-gradient(50% 50% at 84% 76%, rgba(199, 164, 90, 0.16) 0%, rgba(7, 24, 18, 0) 68%),
+    radial-gradient(75% 70% at 50% 50%, #103226 0%, #071812 100%);
+}
+
+@keyframes sfsFallbackDrift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-1.5%, 1.2%, 0) scale(1.04);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.sfs-fallback-animated {
+  animation: sfsFallbackDrift 22s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* ========================================================================
+   EXACT 40mm x 60mm RECEIPT PRINT STYLES
+   ======================================================================== */
+@media screen {
+  .sfs-print-root {
+    display: none;
+  }
+}
+
+@media print {
+  @page {
+    size: 40mm 60mm;
+    margin: 0mm !important;
+  }
+
+  html,
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 40mm !important;
+    background: #0B241C !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* Hide entire interactive web app and 3D background when printing */
+  .sfs-ambient-bg,
+  .sfs-screen-app {
+    display: none !important;
+  }
+
+  /* Show only the dedicated print queue */
+  .sfs-print-root {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 40mm !important;
+  }
+
+  .sfs-print-sheet {
+    position: relative !important;
+    width: 40mm !important;
+    height: 60mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    page-break-after: always !important;
+    break-after: page !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .sfs-print-sheet:last-child {
+    page-break-after: auto !important;
+    break-after: auto !important;
+  }
+}
